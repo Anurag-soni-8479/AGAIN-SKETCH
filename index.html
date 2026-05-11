@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="public/logo1.png" type="image/x-icon">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Anurag Sketch Gallery</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+
+        /* DETAILS SECTION */
+
+        .details-section {
+            padding: 100px 8%;
+            background: #0d0d0d;
+        }
+
+        .details-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .detail-card {
+            background: #1a1a1a;
+            padding: 35px;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid #df321c;
+            transition: 0.4s;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .detail-card h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .detail-card p {
+            color: #cfcfcf;
+            margin-bottom: 20px;
+        }
+
+        .detail-card h4 {
+            font-size: 32px;
+            color: #ff4d6d;
+        }
+
+        /* ORDER SECTION */
+
+        .order-section {
+            padding: 100px 8%;
+            background: #111;
+        }
+
+        .order-title {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 50px;
+        }
+
+        .order-title span {
+            color: #bdbdbd;
+        }
+
+        .order-container {
+            max-width: 700px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .order-container input,
+        .order-container textarea {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            outline: none;
+            border-radius: 14px;
+            background: #1e1e1e;
+            color: white;
+            font-size: 16px;
+        }
+
+        .order-container textarea {
+            height: 160px;
+            resize: none;
+        }
+
+        .order-container button {
+            padding: 16px;
+            border: none;
+            border-radius: 40px;
+            background: white;
+            color: black;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .order-container button:hover {
+            transform: scale(1.03);
+        }
+
+        body {
+            background: #0f0f0f;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            width: 100%;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: #ff4d6d;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #ff4d6d;
+        }
+
+        /* HERO */
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+                url('/public/re.jpeg') center/cover;
+        }
+
+        .hero h1 {
+            font-size: 70px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #ff4d6d;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .hero p {
+            max-width: 700px;
+            color: #d6d6d6;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .hero button {
+            padding: 14px 35px;
+            border: none;
+            border-radius: 40px;
+            background: #ff4d6d;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .hero button:hover {
+            transform: scale(1.05);
+        }
+
+        /* GALLERY */
+
+        .gallery-section {
+            padding: 100px 8%;
+        }
+
+        .gallery {
+            columns: 3 250px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            font-size: 45px;
+        }
+
+        .section-title span {
+            color: #ff4d6d;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            position: relative;
+            margin-bottom: 15px;
+            overflow: hidden;
+            border-radius: 18px;
+            border: 3px solid #df321c;
+        }
+
+        .card img {
+            width: 100%;
+            aspect-ratio: 1.2/1.6;
+            object-fit: cover;
+            display: block;
+            border-radius: 18px;
+            transition: 0.5s;
+        }
+
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: 0.4s;
+        }
+
+        .overlay h3 {
+            font-size: 24px;
+            color: white;
+        }
+
+        .card:hover img {
+            transform: scale(1.08);
+        }
+
+        .card:hover .overlay {
+            opacity: 1;
+        }
+
+        /* ABOUT */
+
+        .about {
+            padding: 100px 8%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .profile-card img {
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #444;
+            width: 90%;
+            height: 90%;
+        }
+
+        .about-img {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Animated Gradient Border */
+
+        .about-img::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: conic-gradient(#ff4d6d,
+                    #df321c,
+                    #00f7ff,
+                    #7dff7d,
+                    #ff4d6d);
+            animation: rotateBorder 4s linear infinite;
+        }
+
+        /* Inner Dark Circle */
+
+        .about-img::after {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            background: #0f0f0f;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* Actual Image */
+
+        .about-img img {
+            position: relative;
+            width: 92%;
+            height: 92%;
+            object-fit: contain;
+            border-radius: 50%;
+            z-index: 2;
+
+        }
+
+        .profile-card {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-card img {
+            width: 99%;
+            height: 99%;
+            border-radius: 50%;
+            object-fit: contain;
+            border: 2px solid #444;
+
+            position: relative;
+            z-index: 2;
+        }
+
+        /* FIRST MOVING LINE */
+
+        .profile-card::before {
+            content: "";
+            position: absolute;
+            inset: 0px;
+            border-radius: 50%;
+            border-top: 4px solid #ed5425;
+            border-bottom: 4px solid #e1501f;
+            border-left: 1px solid transparent;
+            border-right: 1px solid transparent;
+
+            animation: rotate 10s linear infinite;
+        }
+
+        /* ANIMATIONS */
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotateReverse {
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+
+        /* Animation */
+
+        @keyframes rotateBorder {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .about-content {
+            flex: 1;
+        }
+
+        .about-content h2 {
+            font-size: 45px;
+            margin-bottom: 20px;
+        }
+
+        .about-content span {
+            color: #ff4d6d;
+        }
+
+        .about-content p {
+            line-height: 1.9;
+            color: #cfcfcf;
+        }
+
+        /* SOCIAL LINKS */
+
+        .social-links {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 40px;
+            background: #1e1e1e;
+            color: white;
+            transition: 0.3s;
+            border: 2px solid #A2AAAD;
+            font-size: 30px;
+        }
+
+        .social-links a:hover {
+            background: white;
+            color: black;
+            transform: translateY(-4px);
+        }
+
+        /* FOOTER */
+
+        footer {
+            padding: 40px;
+            text-align: center;
+            background: #111;
+            color: #aaa;
+            margin-top: 50px;
+        }
+
+        .sketch-name {
+            text-align: center;
+            margin-top: 12px;
+            font-size: 20px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .logo img {
+            width: 45px;
+            height: 45px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* RESPONSIVE */
+        @media(max-width:768px) {
+
+            .hero h1 {
+                font-size: 45px;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .about {
+                flex-direction: column;
+            }
+
+            .about img {
+                width: 100%;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:992px) {
+
+            .details-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media(max-width:768px) {
+
+            .details-container {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width:768px) {
+
+            .hero h1 {
+                font-size: 45px;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .about {
+                flex-direction: column;
+            }
+
+            .about img {
+                width: 100%;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .about-content {
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        @media(max-width:768px) {
+
+            .hero h1 {
+                font-size: 45px;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .about {
+                flex-direction: column;
+            }
+
+            .about img {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav>
+        <div class="logo">
+
+            <img src="public/logo.png" alt="logo">
+
+            ANURAG <span>ART</span>
+
+        </div>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#details">Details</a></li>
+            <li><a href="#order">Order</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <h1>Sketches That <span>Feel Alive</span></h1>
+
+        <p>
+            Welcome to my professional sketch portfolio.
+            Here you can explore realistic pencil sketches,
+            celebrity artworks, and detailed hand-drawn creations.
+        </p>
+
+        <button onclick="scrollGallery()">Explore Gallery</button>
+
+    </section>
+
+    <!-- GALLERY -->
+
+    <section class="gallery-section" id="gallery">
+
+        <h2 class="section-title">My <span>Sketches</span></h2>
+
+        <div class="gallery">
+
+            <div class="card">
+                <img src="public/cm.png" alt="">
+
+                <h3 class="sketch-name">Cillian Murphy (Oppenheimer)</h3>
+            </div>
+            <div class="card">
+                <img src="public/pro.png" alt="">
+
+                <h3 class="sketch-name">Álvaro Morte (The Professor)</h3>
+            </div>
+            <div class="card">
+                <img src="public/bhaiya.jpeg" alt="">
+
+                <h3 class="sketch-name">Ankit soni</h3>
+            </div>
+            <div class="card">
+                <img src="public/doly.jpeg" alt="">
+
+                <h3 class="sketch-name">Doll/anime-style</h3>
+            </div>
+            <div class="card">
+                <img src="public/naruto.jpeg" alt="">
+
+                <h3 class="sketch-name">Monkey D. Luffy</h3>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800" alt="">
+
+                <h3 class="sketch-name">Mbappe Sketch</h3>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800" alt="">
+
+                <h3 class="sketch-name">Mbappe Sketch</h3>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800" alt="">
+
+                <h3 class="sketch-name">Mbappe Sketch</h3>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800" alt="">
+
+                <h3 class="sketch-name">Mbappe Sketch</h3>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800" alt="">
+
+                <h3 class="sketch-name">Mbappe Sketch</h3>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800" alt="">
+
+                <h3 class="sketch-name">Mbappe Sketch</h3>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800" alt="">
+
+                <h3 class="sketch-name">Mbappe Sketch</h3>
+            </div>
+
+
+        </div>
+
+    </section>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- ABOUT -->
+
+    <section class="about" id="about">
+
+        <div class="profile-card">
+            <img src="public/me.png" alt="">
+        </div>
+        <div class="about-content">
+
+            <h2>About <span>Artist</span></h2>
+
+            <p>
+                I am Anurag Soni, a sketch artist and engineering student
+                passionate about realistic pencil art, creativity, and visual storytelling.
+                My goal is to create sketches that connect emotions with art.
+            </p>
+            <div class="social-links">
+
+                <a href="https://instagram.com/" target="_blank">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <a href="https://youtube.com/" target="_blank">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+
+                <a href="https://wa.me/91XXXXXXXXXX" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+
+                <a href="https://twitter.com/" target="_blank">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </section>
+    <!-- DETAILS SECTION -->
+
+    <section class="details-section" id="details">
+
+        <h2 class="section-title">
+            Sketch <span>Details & Prices</span>
+        </h2>
+
+        <div class="details-container">
+
+            <div class="detail-card" onclick="selectSketch('A4 Portrait Sketch', '₹199')">
+                <h3>A4 Portrait Sketch</h3>
+                <p>Realistic Pencil Sketch</p>
+                <h4>₹199</h4>
+            </div>
+
+            <div class="detail-card" onclick="selectSketch('A3 Portrait Sketch', '₹199')">
+                <h3>A3 Portrait Sketch</h3>
+                <p>Detailed Face + Shading</p>
+                <h4>₹199</h4>
+            </div>
+
+            <div class="detail-card" onclick="selectSketch('Couple Sketch', '₹299')">
+                <h3>Couple Sketch</h3>
+                <p>2 Faces Detailed Drawing</p>
+                <h4>₹299</h4>
+            </div>
+
+            <div class="detail-card" onclick="selectSketch('Celebrity Sketch', '₹199')">
+                <h3>Celebrity Sketch</h3>
+                <p>Hyper Realistic Artwork</p>
+                <h4>₹199</h4>
+            </div>
+
+            <div class="detail-card" onclick="selectSketch('family sketch', '₹399')">
+                <h3>family sketch</h3>
+                <p>full size</p>
+                <h4>₹399</h4>
+            </div>
+
+            <div class="detail-card" onclick="selectSketch('family sketch', '₹499')">
+                <h3>Express Delivery</h3>
+                <p>Fast Delivery in 7 Days</p>
+                <h4>₹499</h4>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ORDER SECTION -->
+
+    <section class="order-section" id="order">
+
+        <h2 class="order-title">Order Your <span>Sketch</span></h2>
+
+        <div class="order-container">
+
+            <input type="text" placeholder="Your Name">
+
+            <input type="email" placeholder="Your Email">
+
+            <input type="text" placeholder="Photo Type (Portrait, Couple, Pet...)">
+            <input type="text" id="priceInput" placeholder="Amount" readonly>
+
+            <textarea placeholder="Describe Your Sketch"></textarea>
+
+            <button onclick="sendToWhatsapp()">Place Order</button>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+        @ Anurag Art | Thanks for visit |
+    </footer>
+
+
+
+    <script>
+        function selectSketch(type, price) {
+
+            // Sketch type fill
+            document.querySelectorAll('input[type="text"]')[1].value = type;
+
+            // Price fill
+            document.getElementById("priceInput").value = price;
+
+            // Scroll to order section
+            document.getElementById("order").scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+
+        function scrollGallery() {
+            document.getElementById("gallery").scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+
+        function sendToWhatsapp() {
+
+            let name = document.querySelector('input[type="text"]').value;
+
+            let email = document.querySelector('input[type="email"]').value;
+
+            let type = document.querySelectorAll('input[type="text"]')[1].value;
+
+            let message = document.querySelector('textarea').value;
+
+            let phoneNumber = "917999435098";
+
+            let url = `https://wa.me/${phoneNumber}?text=
+            *New Sketch Order*%0A%0A
+            *Name:* ${name}%0A
+            *Email:* ${email}%0A
+            *Sketch Type:* ${type}%0A
+            *Details:* ${message}`;
+
+            window.open(url, '_blank');
+        }
+
+    </script>
+
+</body>
+
+</html>
