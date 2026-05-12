@@ -77,7 +77,7 @@ app.post("/signup", async (req, res) => {
 
             return res.json({
                 success: false,
-                message: "User already exists,please login"
+                message: "User already exists, please login"
             });
 
         }
@@ -96,21 +96,21 @@ app.post("/signup", async (req, res) => {
         await user.save();
 
         // send email notification
-        await transporter.sendMail({
+//         await transporter.sendMail({
 
-            from: process.env.EMAIL_USER,
+//             from: process.env.EMAIL_USER,
 
-            to: process.env.EMAIL_USER,
+//             to: process.env.EMAIL_USER,
 
-            subject: "New User Signup",
+//             subject: "New User Signup",
 
-            text: `
-New Signup on Anurag Art
+//             text: `
+// New Signup on Anurag Art
 
-Email: ${email}
-            `
+// Email: ${email}
+//             `
 
-        });
+//         });
 
         res.json({
 

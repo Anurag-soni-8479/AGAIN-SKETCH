@@ -988,6 +988,7 @@
             if (data.success) {
                 localStorage.setItem("user", email);
                 showProfile(email);
+                alert(data.message);
                 document.getElementById("authPopup").style.display = "none";
             }
         }
