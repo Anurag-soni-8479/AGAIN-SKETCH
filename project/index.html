@@ -178,7 +178,7 @@
             padding: 20px;
             background:
                 linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
-                url('/public/re.jpeg') center/cover;
+                url('public/re.jpeg') center/cover;
         }
 
         .hero h1 {
@@ -490,6 +490,96 @@
             border-radius: 50%;
         }
 
+        .auth-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #loginBtn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            background: #ff4d6d;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #ff4d6d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+            font-size: 20px;
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* POPUP */
+
+        .popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            display: none;
+        }
+
+        .popup-content {
+            width: 90%;
+            max-width: 400px;
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 20px;
+        }
+
+        .popup-content h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .popup-content input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #2a2a2a;
+            color: white;
+        }
+
+        .popup-content button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #ff4d6d;
+            color: white;
+            cursor: pointer;
+        }
+
+        .close-popup {
+            float: right;
+            cursor: pointer;
+            font-size: 22px;
+        }
+
         /* RESPONSIVE */
         @media(max-width:768px) {
 
@@ -601,6 +691,15 @@
             <li><a href="#details">Details</a></li>
             <li><a href="#order">Order</a></li>
         </ul>
+        <div class="auth-section">
+
+            <button id="loginBtn">Login</button>
+
+            <div class="user-profile hidden" id="userProfile">
+                <div class="avatar" id="avatar">A</div>
+            </div>
+
+        </div>
     </nav>
 
     <!-- HERO -->
@@ -712,7 +811,7 @@
             </p>
             <div class="social-links">
 
-                <a href="https://instagram.com/" target="_blank">
+                <a href="https://www.instagram.com/anuragsoni1820/" target="_blank">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
 
@@ -858,7 +957,86 @@
             window.open(url, '_blank');
         }
 
+
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            document.getElementById("loginBtn").onclick = () => {
+                document.getElementById("authPopup").style.display = "flex";
+            }
+
+            document.getElementById("closePopup").onclick = () => {
+                document.getElementById("authPopup").style.display = "none";
+            }
+
+            const user = localStorage.getItem("user");
+            if (user) showProfile(user);
+        });
+
+        async function signup() {
+            const email = document.getElementById("userEmail").value;
+            const password = document.getElementById("userPassword").value;
+            const res = await fetch("http://localhost:5000/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            alert(data.message);
+            if (data.success) {
+                localStorage.setItem("user", email);
+                showProfile(email);
+                document.getElementById("authPopup").style.display = "none";
+            }
+        }
+
+        async function login() {
+            const email = document.getElementById("userEmail").value;
+            const password = document.getElementById("userPassword").value;
+            const res = await fetch("http://localhost:5000/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            alert(data.message);
+            if (data.success) {
+                localStorage.setItem("user", email);
+                showProfile(email);
+                document.getElementById("authPopup").style.display = "none";
+            }
+        }
+
+        function showProfile(email) {
+            document.getElementById("loginBtn").style.display = "none";
+            document.getElementById("userProfile").classList.remove("hidden");
+            document.getElementById("avatar").innerText = email.charAt(0).toUpperCase();
+        }
+    </script>
+
+    <div class="popup" id="authPopup">
+
+        <div class="popup-content">
+
+            <span class="close-popup" id="closePopup">&times;</span>
+
+            <h2>Login / Signup</h2>
+
+            <input type="email" id="userEmail" placeholder="Enter Email">
+
+            <input type="password" id="userPassword" placeholder="Enter Password">
+
+            <button onclick="signup()">Signup</button>
+
+            <br><br>
+
+            <button onclick="login()">Login</button>
+
+        </div>
+
+    </div>
 
 </body>
 
