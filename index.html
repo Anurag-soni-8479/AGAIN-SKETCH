@@ -225,6 +225,7 @@
         }
 
         .gallery {
+            -webkit-overflow-scrolling: touch;
             columns: 3 250px;
         }
 
@@ -259,6 +260,7 @@
             display: block;
             border-radius: 18px;
             transition: 0.5s;
+            pointer-events: none;
         }
 
 
@@ -698,7 +700,8 @@
             <button id="loginBtn">Login</button>
 
             <div class="user-profile hidden" id="userProfile">
-                <div class="avatar" id="avatar">A</div>
+                <div class="avatar" id="avatar" onclick="window.location.href='profile.html'" style="cursor:pointer;">A
+                </div>
             </div>
 
         </div>

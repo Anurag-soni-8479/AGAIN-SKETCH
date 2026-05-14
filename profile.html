@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profile – Anurag Art</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background: #0f0f0f;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── PARTICLES BACKGROUND ── */
+        #particles {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── NAVBAR ── */
+        nav {
+            width: 100%;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.45);
+            border-bottom: 1px solid rgba(255, 77, 109, 0.15);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo span {
+            color: #ff4d6d;
+        }
+
+        .back-btn {
+            padding: 10px 22px;
+            border: 2px solid #ff4d6d;
+            border-radius: 30px;
+            background: transparent;
+            color: #ff4d6d;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: #ff4d6d;
+            color: white;
+            transform: translateX(-3px);
+        }
+
+        /* ── MAIN CONTENT ── */
+        .page-wrapper {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 20px 60px;
+        }
+
+        /* ── PROFILE CARD ── */
+        .profile-card {
+            background: linear-gradient(145deg, #1a1a1a, #141414);
+            border: 1px solid rgba(255, 77, 109, 0.2);
+            border-radius: 30px;
+            padding: 50px 40px 40px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 77, 109, 0.05);
+            animation: cardEntrance 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* glowing top bar */
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff4d6d, #df321c, #ff4d6d, transparent);
+            border-radius: 50%;
+        }
+
+        /* subtle glow blob */
+        .profile-card::after {
+            content: '';
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 200px;
+            background: radial-gradient(ellipse, rgba(255, 77, 109, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* ── AVATAR RING ── */
+        .avatar-wrapper {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 25px;
+        }
+
+        .avatar-ring {
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            background: conic-gradient(#ff4d6d, #df321c, #ff9a3c, #ff4d6d);
+            animation: spinRing 3s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes spinRing {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .avatar-inner {
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .avatar-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .avatar-initials {
+            font-size: 42px;
+            font-weight: 700;
+            color: #ff4d6d;
+            line-height: 1;
+        }
+
+        /* online badge */
+        .online-badge {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            width: 18px;
+            height: 18px;
+            background: #22c55e;
+            border-radius: 50%;
+            border: 3px solid #1a1a1a;
+            z-index: 2;
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+            }
+        }
+
+        /* ── NAME & EMAIL ── */
+        .profile-name {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #fff 40%, #ff4d6d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeUp 0.6s 0.3s both;
+        }
+
+        .profile-email {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            animation: fadeUp 0.6s 0.4s both;
+        }
+
+        .profile-email i {
+            color: #ff4d6d;
+            font-size: 13px;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── STATS ROW ── */
+        .stats-row {
+            display: flex;
+            gap: 1px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 28px;
+            animation: fadeUp 0.6s 0.5s both;
+        }
+
+        .stat-item {
+            flex: 1;
+            padding: 16px 10px;
+            background: #1a1a1a;
+            text-align: center;
+            transition: background 0.3s;
+        }
+
+        .stat-item:hover {
+            background: #222;
+        }
+
+        .stat-item+.stat-item {
+            border-left: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .stat-num {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ff4d6d;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #888;
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── INFO PILLS ── */
+        .info-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 28px;
+            animation: fadeUp 0.6s 0.55s both;
+        }
+
+        .info-pill {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            padding: 14px 18px;
+            transition: 0.3s;
+        }
+
+        .info-pill:hover {
+            border-color: rgba(255, 77, 109, 0.35);
+            background: rgba(255, 77, 109, 0.05);
+            transform: translateX(4px);
+        }
+
+        .pill-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #ff4d6d, #df321c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .pill-label {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pill-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+        }
+
+        /* ── ACTION BUTTONS ── */
+        .action-row {
+            display: flex;
+            gap: 12px;
+            animation: fadeUp 0.6s 0.65s both;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #ff4d6d, #df321c);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.4);
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            background: transparent;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            border-color: #ff4d6d;
+            color: #ff4d6d;
+            transform: translateY(-3px);
+        }
+
+        /* ── MEMBER TAG ── */
+        .member-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 20px;
+            padding: 6px 16px;
+            border-radius: 30px;
+            background: rgba(255, 77, 109, 0.1);
+            border: 1px solid rgba(255, 77, 109, 0.25);
+            font-size: 12px;
+            color: #ff4d6d;
+            animation: fadeUp 0.6s 0.7s both;
+        }
+
+        .member-tag i {
+            font-size: 11px;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 520px) {
+            .profile-card {
+                padding: 40px 22px 30px;
+                border-radius: 22px;
+            }
+
+            .profile-name {
+                font-size: 22px;
+            }
+
+            .action-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- PARTICLES CANVAS -->
+    <canvas id="particles"></canvas>
+
+    <!-- NAVBAR -->
+    <nav>
+        <a href="index.html" class="logo">
+            ANURAG <span>ART</span>
+        </a>
+        <button class="back-btn" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-arrow-left"></i> Back
+        </button>
+    </nav>
+
+    <!-- MAIN -->
+    <div class="page-wrapper">
+        <div class="profile-card">
+
+            <!-- Avatar -->
+            <div class="avatar-wrapper">
+                <div class="avatar-ring"></div>
+                <div class="avatar-inner" id="avatarInner">
+                    <!-- Image ya initials dynamically aayega -->
+                </div>
+                <div class="online-badge"></div>
+            </div>
+
+            <!-- Name & Email -->
+            <div class="profile-name" id="profileName">Anurag Soni</div>
+            <div class="profile-email">
+                <i class="fa-solid fa-envelope"></i>
+                <span id="profileEmail">anurag@example.com</span>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-item">
+                    <div class="stat-num">12</div>
+                    <div class="stat-label">Orders</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">5★</div>
+                    <div class="stat-label">Rating</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">2024</div>
+                    <div class="stat-label">Joined</div>
+                </div>
+            </div>
+
+            <!-- Info Pills -->
+            <div class="info-grid">
+                <div class="info-pill">
+                    <div class="pill-icon"><i class="fa-solid fa-user"></i></div>
+                    <div>
+                        <div class="pill-label">Full Name</div>
+                        <div class="pill-value" id="pillName">Anurag Soni</div>
+                    </div>
+                </div>
+                <div class="info-pill">
+                    <div class="pill-icon"><i class="fa-brands fa-google"></i></div>
+                    <div>
+                        <div class="pill-label">Gmail</div>
+                        <div class="pill-value" id="pillEmail">anurag@example.com</div>
+                    </div>
+                </div>
+                <div class="info-pill">
+                    <div class="pill-icon"><i class="fa-solid fa-location-dot"></i></div>
+                    <div>
+                        <div class="pill-label">Location</div>
+                        <div class="pill-value">Indore, India</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="action-row">
+                <button class="btn-primary" onclick="window.location.href='index.html#order'">
+                    <i class="fa-solid fa-palette"></i> Order Sketch
+                </button>
+                <button class="btn-secondary" onclick="logout()">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+
+            <!-- Member tag -->
+            <div class="member-tag">
+                <i class="fa-solid fa-crown"></i> Premium Member
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        /* ── LOAD USER DATA ── */
+        window.addEventListener('DOMContentLoaded', () => {
+            const email = localStorage.getItem('user') || 'anurag@example.com';
+            const name = localStorage.getItem('userName') || formatName(email);
+
+            document.getElementById('profileName').textContent = name;
+            document.getElementById('profileEmail').textContent = email;
+            document.getElementById('pillName').textContent = name;
+            document.getElementById('pillEmail').textContent = email;
+
+            // Avatar: show image if saved, else initials
+            const avatarInner = document.getElementById('avatarInner');
+            const savedImg = localStorage.getItem('userAvatar');
+
+            if (savedImg) {
+                avatarInner.innerHTML = `<img src="${savedImg}" alt="avatar">`;
+            } else {
+                avatarInner.innerHTML = `<span class="avatar-initials">${email.charAt(0).toUpperCase()}</span>`;
+            }
+        });
+
+        function formatName(email) {
+            const part = email.split('@')[0];
+            return part.charAt(0).toUpperCase() + part.slice(1);
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userAvatar');
+            window.location.href = 'index.html';
+        }
+
+        /* ── PARTICLES ── */
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let W, H, dots = [];
+
+        function resize() {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+        }
+
+        function randomDot() {
+            return {
+                x: Math.random() * W,
+                y: Math.random() * H,
+                r: Math.random() * 1.5 + 0.5,
+                dx: (Math.random() - 0.5) * 0.4,
+                dy: (Math.random() - 0.5) * 0.4,
+                alpha: Math.random() * 0.5 + 0.1
+            };
+        }
+
+        function initDots() {
+            dots = Array.from({ length: 80 }, randomDot);
+        }
+
+        function drawDots() {
+            ctx.clearRect(0, 0, W, H);
+            dots.forEach(d => {
+                ctx.beginPath();
+                ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255,77,109,${d.alpha})`;
+                ctx.fill();
+                d.x += d.dx; d.y += d.dy;
+                if (d.x < 0 || d.x > W) d.dx *= -1;
+                if (d.y < 0 || d.y > H) d.dy *= -1;
+            });
+            requestAnimationFrame(drawDots);
+        }
+
+        resize();
+        initDots();
+        drawDots();
+        window.addEventListener('resize', () => { resize(); initDots(); });
+    </script>
+
+</body>
+
+</html>
