@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({
     // origin: "http://127.0.0.1:5500",
     origin: "https://anurag-soni-8479.github.io",
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
 }));
 
 /* ---------------- DATABASE ---------------- */
@@ -31,6 +31,11 @@ mongoose.connect(process.env.MONGO_URL)
 /* ---------------- SCHEMA ---------------- */
 
 const userSchema = new mongoose.Schema({
+
+    fullName: {
+        type: String,
+        required: true
+    },
 
     email: {
         type: String,
@@ -68,7 +73,7 @@ app.post("/signup", async (req, res) => {
 
     try {
 
-        const { email, password } = req.body;
+        const { fullName, email, password } = req.body;
 
         // check existing user
         const existingUser = await User.findOne({ email });
@@ -87,7 +92,7 @@ app.post("/signup", async (req, res) => {
 
         // save user
         const user = new User({
-
+            fullName,
             email,
             password: hashedPassword
 
@@ -96,21 +101,21 @@ app.post("/signup", async (req, res) => {
         await user.save();
 
         // send email notification
-//         await transporter.sendMail({
+        //         await transporter.sendMail({
 
-//             from: process.env.EMAIL_USER,
+        //             from: process.env.EMAIL_USER,
 
-//             to: process.env.EMAIL_USER,
+        //             to: process.env.EMAIL_USER,
 
-//             subject: "New User Signup",
+        //             subject: "New User Signup",
 
-//             text: `
-// New Signup on Anurag Art
+        //             text: `
+        // New Signup on Anurag Art
 
-// Email: ${email}
-//             `
+        // Email: ${email}
+        //             `
 
-//         });
+        //         });
 
         res.json({
 
@@ -191,6 +196,34 @@ app.post("/login", async (req, res) => {
 
     }
 
+});
+
+app.get("/profile", async (req, res) => {
+    try {
+        const { email } = req.query;
+        const user = await User.findOne({ email });
+        if (!user) return res.json({ success: false, message: "User not found" });
+        res.json({ success: true, fullName: user.fullName, email: user.email });
+    } catch (error) {
+        res.json({ success: false, message: "Error fetching profile" });
+    }
+});
+
+app.put("/update-profile", async (req, res) => {
+    try {
+        const { oldEmail, fullName, email } = req.body;
+        const emailExists = await User.findOne({ email });
+        if (emailExists && email !== oldEmail) {
+            return res.json({ success: false, message: "Email already taken" });
+        }
+        await User.findOneAndUpdate(
+            { email: oldEmail },
+            { fullName, email }
+        );
+        res.json({ success: true, message: "Profile Updated" });
+    } catch (error) {
+        res.json({ success: false, message: "Update Failed" });
+    }
 });
 
 /* ---------------- SERVER ---------------- */

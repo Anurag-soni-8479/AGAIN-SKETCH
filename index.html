@@ -987,13 +987,14 @@
         });
 
         async function signup() {
+            const fullName = document.getElementById("userName").value;
             const email = document.getElementById("userEmail").value;
             const password = document.getElementById("userPassword").value;
 
             const res = await fetch("https://again-sketch.onrender.com/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ fullName, email, password })
             });
 
             const data = await res.json();
@@ -1020,7 +1021,10 @@
             alert(data.message);
 
             if (data.success) {
+                const profileRes = await fetch(`https://again-sketch.onrender.com/profile?email=${email}`);
+                const profileData = await profileRes.json();
                 localStorage.setItem("user", email);
+                localStorage.setItem("userName", profileData.fullName);  // 👈 ADD
                 showProfile(email);
                 document.getElementById("authPopup").style.display = "none";
             }
@@ -1040,6 +1044,8 @@
             <span class="close-popup" id="closePopup">&times;</span>
 
             <h2>Login / Signup</h2>
+
+            <input type="text" id="userName" placeholder="Enter Full Name">
 
             <input type="email" id="userEmail" placeholder="Enter Email">
 

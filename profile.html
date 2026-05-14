@@ -529,6 +529,30 @@
                 <button class="btn-secondary" onclick="logout()">
                     <i class="fa-solid fa-right-from-bracket"></i> Logout
                 </button>
+                <button class="btn-primary" onclick="toggleEdit(true)">
+                    <i class="fa-solid fa-pen"></i> Edit
+                </button>
+            </div>
+
+            <div id="editForm" style="display:none; margin-top:20px; width:100%;">
+                <input type="text" id="editName" placeholder="Full Name" style="width:100%;padding:13px;border-radius:12px;background:#2a2a2a;
+               border:1px solid rgba(255,77,109,0.3);color:white;
+               font-size:14px;margin-bottom:10px;outline:none;">
+                <input type="email" id="editEmail" placeholder="Email" style="width:100%;padding:13px;border-radius:12px;background:#2a2a2a;
+               border:1px solid rgba(255,77,109,0.3);color:white;
+               font-size:14px;margin-bottom:14px;outline:none;">
+                <div style="display:flex;gap:10px;">
+                    <button onclick="saveProfile()" style="flex:1;padding:12px;border:none;border-radius:12px;
+                   background:linear-gradient(135deg,#ff4d6d,#df321c);
+                   color:white;font-weight:600;cursor:pointer;">
+                        Save
+                    </button>
+                    <button onclick="toggleEdit(false)" style="flex:1;padding:12px;border:2px solid rgba(255,255,255,0.15);
+                   border-radius:12px;background:transparent;
+                   color:white;font-weight:600;cursor:pointer;">
+                        Cancel
+                    </button>
+                </div>
             </div>
 
             <!-- Member tag -->
@@ -541,9 +565,13 @@
 
     <script>
         /* ── LOAD USER DATA ── */
-        window.addEventListener('DOMContentLoaded', () => {
-            const email = localStorage.getItem('user') || 'anurag@example.com';
-            const name = localStorage.getItem('userName') || formatName(email);
+        window.addEventListener('DOMContentLoaded', async () => {
+            const email = localStorage.getItem('user');
+            if (!email) { window.location.href = 'index.html'; return; } // not logged in
+
+            const res = await fetch(`https://again-sketch.onrender.com/profile?email=${email}`);
+            const data = await res.json();
+            const name = data.fullName;
 
             document.getElementById('profileName').textContent = name;
             document.getElementById('profileEmail').textContent = email;
@@ -571,6 +599,40 @@
             localStorage.removeItem('userName');
             localStorage.removeItem('userAvatar');
             window.location.href = 'index.html';
+        }
+
+        function toggleEdit(show) {
+            document.getElementById("editForm").style.display = show ? "block" : "none";
+            if (show) {
+                document.getElementById("editName").value = document.getElementById("pillName").textContent;
+                document.getElementById("editEmail").value = document.getElementById("pillEmail").textContent;
+            }
+        }
+
+        async function saveProfile() {
+            const oldEmail = localStorage.getItem("user");
+            const fullName = document.getElementById("editName").value.trim();
+            const email = document.getElementById("editEmail").value.trim();
+
+            const res = await fetch("https://again-sketch.onrender.com/update-profile", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ oldEmail, fullName, email })
+            });
+            const data = await res.json();
+            alert(data.message);
+
+            if (data.success) {
+                // localStorage update karo
+                localStorage.setItem("user", email);
+                localStorage.setItem("userName", fullName);
+                // UI update karo
+                document.getElementById("profileName").textContent = fullName;
+                document.getElementById("profileEmail").textContent = email;
+                document.getElementById("pillName").textContent = fullName;
+                document.getElementById("pillEmail").textContent = email;
+                toggleEdit(false);
+            }
         }
 
         /* ── PARTICLES ── */
