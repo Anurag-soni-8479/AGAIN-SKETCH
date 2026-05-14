@@ -1143,14 +1143,15 @@
 
         <div class="order-container">
 
-            <input type="text" placeholder="Your Name">
+            <input type="text" id="nameInput" placeholder="Your Name">
 
-            <input type="email" placeholder="Your Email">
+            <input type="email" id="emailInput" placeholder="Your Email">
 
-            <input type="text" placeholder="Photo Type (Portrait, Couple, Pet...)">
+            <input type="text" id="typeInput" placeholder="Photo Type (Portrait, Couple, Pet...)" readonly>
+
             <input type="text" id="priceInput" placeholder="Amount" readonly>
 
-            <textarea placeholder="Describe Your Sketch"></textarea>
+            <textarea id="messageInput" placeholder="Describe Your Sketch"></textarea>
 
             <button onclick="sendToWhatsapp()">Place Order</button>
 
@@ -1169,13 +1170,19 @@
     <script>
         function selectSketch(type, price) {
 
-            // Sketch type fill
-            document.querySelectorAll('input[type="text"]')[1].value = type;
+            // Fill form automatically
+            document.getElementById("typeInput").value = type;
 
-            // Price fill
             document.getElementById("priceInput").value = price;
 
-            // Scroll to order section
+            // Success notification
+            showToast(
+                "success",
+                "Sketch Selected",
+                `${type} selected successfully`
+            );
+
+            // Redirect to order section
             document.getElementById("order").scrollIntoView({
                 behavior: "smooth"
             });
@@ -1189,24 +1196,45 @@
 
         function sendToWhatsapp() {
 
-            let name = document.querySelector('input[type="text"]').value;
+            let name = document.getElementById("nameInput").value;
 
-            let email = document.querySelector('input[type="email"]').value;
+            let email = document.getElementById("emailInput").value;
 
-            let type = document.querySelectorAll('input[type="text"]')[1].value;
+            let type = document.getElementById("typeInput").value;
 
-            let message = document.querySelector('textarea').value;
+            let price = document.getElementById("priceInput").value;
+
+            let message = document.getElementById("messageInput").value;
+
+            // Validation
+            if (!name || !email || !type || !price) {
+
+                showToast(
+                    "error",
+                    "Incomplete Form",
+                    "Please fill all required details"
+                );
+
+                return;
+            }
 
             let phoneNumber = "917999435098";
 
             let url = `https://wa.me/${phoneNumber}?text=
-            *New Sketch Order*%0A%0A
-            *Name:* ${name}%0A
-            *Email:* ${email}%0A
-            *Sketch Type:* ${type}%0A
-            *Details:* ${message}`;
+*🎨 New Sketch Order*%0A%0A
+*👤 Name:* ${name}%0A
+*📧 Email:* ${email}%0A
+*🖼 Sketch Type:* ${type}%0A
+*💰 Price:* ${price}%0A
+*📝 Details:* ${message}`;
 
             window.open(url, '_blank');
+
+            showToast(
+                "success",
+                "Redirecting",
+                "Opening WhatsApp..."
+            );
         }
 
 
@@ -1334,6 +1362,27 @@
                 toast.classList.remove("show");
             }, 3000);
         }
+
+        // Redirect user to sketch details section
+        function redirectToDetails() {
+
+            showToast(
+                "info",
+                "Select Sketch",
+                "Please select a sketch type and price from Sketch Details section"
+            );
+
+            document.getElementById("details").scrollIntoView({
+                behavior: "smooth"
+            });
+        }
+
+        // Click events
+        document.getElementById("typeInput")
+            .addEventListener("click", redirectToDetails);
+
+        document.getElementById("priceInput")
+            .addEventListener("click", redirectToDetails);
     </script>
 
     <div class="popup" id="authPopup">
