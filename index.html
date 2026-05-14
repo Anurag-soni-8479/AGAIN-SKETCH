@@ -17,6 +17,8 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
+            overscroll-behavior: none;
+            user-select: none;
         }
 
 
@@ -178,7 +180,7 @@
             padding: 20px;
             background:
                 linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
-                url('public/re.jpeg') center/cover;
+                url(public/re.jpeg) center/cover;
         }
 
         .hero h1 {
@@ -752,39 +754,39 @@
                 <h3 class="sketch-name">Monkey D. Luffy</h3>
             </div>
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800" alt="">
+                <img src="public/grurji.jpeg" alt="">
 
-                <h3 class="sketch-name">Mbappe Sketch</h3>
+                <h3 class="sketch-name">Dhirendra sastri (guruji)</h3>
             </div>
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800" alt="">
+                <img src="public/parent.jpeg" alt="">
 
-                <h3 class="sketch-name">Mbappe Sketch</h3>
+                <h3 class="sketch-name">Parent</h3>
             </div>
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800" alt="">
+                <img src="public/ironman.jpeg" alt="">
 
-                <h3 class="sketch-name">Mbappe Sketch</h3>
+                <h3 class="sketch-name">Iron man</h3>
             </div>
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800" alt="">
+                <img src="public/loki.jpeg" alt="">
 
-                <h3 class="sketch-name">Mbappe Sketch</h3>
+                <h3 class="sketch-name">Loki (marval)</h3>
             </div>
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800" alt="">
+                <img src="public/ar.jpeg" alt="">
 
-                <h3 class="sketch-name">Mbappe Sketch</h3>
+                <h3 class="sketch-name">Arijit singh</h3>
             </div>
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800" alt="">
+                <img src="public/ms.jpeg" alt="">
 
-                <h3 class="sketch-name">Mbappe Sketch</h3>
+                <h3 class="sketch-name">M.S dhoni</h3>
             </div>
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=800" alt="">
+                <img src="public/jittu.jpeg" alt="">
 
-                <h3 class="sketch-name">Mbappe Sketch</h3>
+                <h3 class="sketch-name">Jeetu bhaiya (kota fectory)</h3>
             </div>
 
 
@@ -806,7 +808,7 @@
 
             <p>
                 I am Anurag Soni, a sketch artist and engineering student
-                passionate about realistic pencil art, creativity, and visual storytelling.
+                passionate about realistic pencil art, creativity.
                 My goal is to create sketches that connect emotions with art.
             </p>
             <div class="social-links">
@@ -815,15 +817,15 @@
                     <i class="fa-brands fa-instagram"></i>
                 </a>
 
-                <a href="https://youtube.com/" target="_blank">
+                <a href="https://www.youtube.com/@Sketch_by_Anshu_78" target="_blank">
                     <i class="fa-brands fa-youtube"></i>
                 </a>
 
-                <a href="https://wa.me/91XXXXXXXXXX" target="_blank">
+                <a href="https://wa.me/917999435098" target="_blank">
                     <i class="fa-brands fa-whatsapp"></i>
                 </a>
 
-                <a href="https://twitter.com/" target="_blank">
+                <a href="https://x.com/ANURAG__SONI_" target="_blank">
                     <i class="fa-brands fa-x-twitter"></i>
                 </a>
 
@@ -963,32 +965,40 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
 
-            document.getElementById("loginBtn").onclick = () => {
-                document.getElementById("authPopup").style.display = "flex";
+            const loginBtn = document.getElementById("loginBtn");
+            const authPopup = document.getElementById("authPopup");
+            const closePopupBtn = document.getElementById("closePopup");
+
+            loginBtn.onclick = () => {
+                authPopup.style.display = "flex";
             }
 
-            document.getElementById("closePopup").onclick = () => {
-                document.getElementById("authPopup").style.display = "none";
+            closePopupBtn.onclick = () => {
+                authPopup.style.display = "none";
             }
 
             const user = localStorage.getItem("user");
-            if (user) showProfile(user);
+            if (user) {
+                showProfile(user);
+            }
         });
 
         async function signup() {
             const email = document.getElementById("userEmail").value;
             const password = document.getElementById("userPassword").value;
+
             const res = await fetch("https://again-sketch.onrender.com/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })
             });
+
             const data = await res.json();
             alert(data.message);
+
             if (data.success) {
                 localStorage.setItem("user", email);
                 showProfile(email);
-                alert(data.message);
                 document.getElementById("authPopup").style.display = "none";
             }
         }
@@ -996,13 +1006,16 @@
         async function login() {
             const email = document.getElementById("userEmail").value;
             const password = document.getElementById("userPassword").value;
+
             const res = await fetch("https://again-sketch.onrender.com/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })
             });
+
             const data = await res.json();
             alert(data.message);
+
             if (data.success) {
                 localStorage.setItem("user", email);
                 showProfile(email);
