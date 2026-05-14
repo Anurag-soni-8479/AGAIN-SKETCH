@@ -442,10 +442,256 @@
                 flex-direction: column;
             }
         }
+
+        /* ── LOADER ── */
+        #globalLoader {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #globalLoader.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .loader-ring {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .loader-ring::before,
+        .loader-ring::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+        }
+
+        .loader-ring::before {
+            border: 4px solid rgba(255, 77, 109, 0.15);
+        }
+
+        .loader-ring::after {
+            border: 4px solid transparent;
+            border-top-color: #ff4d6d;
+            border-right-color: #df321c;
+            animation: loaderSpin 0.9s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
+        }
+
+        .loader-inner-ring {
+            position: absolute;
+            inset: 12px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-bottom-color: #ff9a3c;
+            border-left-color: #ff4d6d55;
+            animation: loaderSpin 1.3s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite reverse;
+        }
+
+        .loader-dot {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader-dot::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff4d6d;
+            box-shadow: 0 0 10px #ff4d6d, 0 0 20px #ff4d6d88;
+            animation: loaderPulse 0.9s ease-in-out infinite;
+        }
+
+        .loader-text {
+            margin-top: 22px;
+            font-size: 13px;
+            color: #aaa;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            animation: loaderPulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes loaderSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes loaderPulse {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* ── TOAST NOTIFICATION ── */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            min-width: 260px;
+            max-width: 340px;
+            background: #1a1a1a;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            z-index: 9998;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transform: translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        #toast.show {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        #toast.success {
+            border-left: 4px solid #22c55e;
+        }
+
+        #toast.error {
+            border-left: 4px solid #ff4d6d;
+        }
+
+        #toast.info {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .toast-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        #toast.success .toast-icon {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+
+        #toast.error .toast-icon {
+            background: rgba(255, 77, 109, 0.15);
+            color: #ff4d6d;
+        }
+
+        #toast.info .toast-icon {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+
+        .toast-body {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 3px;
+        }
+
+        .toast-msg {
+            font-size: 12px;
+            color: #aaa;
+            line-height: 1.5;
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            border-radius: 0 0 16px 16px;
+            width: 100%;
+            transform-origin: left;
+            animation: toastProgress 3s linear forwards;
+        }
+
+        #toast.success .toast-progress {
+            background: #22c55e;
+        }
+
+        #toast.error .toast-progress {
+            background: #ff4d6d;
+        }
+
+        #toast.info .toast-progress {
+            background: #3b82f6;
+        }
+
+        @keyframes toastProgress {
+            from {
+                transform: scaleX(1);
+            }
+
+            to {
+                transform: scaleX(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            #toast {
+                bottom: 16px;
+                right: 16px;
+                left: 16px;
+                max-width: unset;
+            }
+        }
     </style>
 </head>
 
 <body>
+
+    <!-- LOADER -->
+    <div id="globalLoader">
+        <div class="loader-ring">
+            <div class="loader-inner-ring"></div>
+            <div class="loader-dot"></div>
+        </div>
+        <div class="loader-text" id="loaderText">Please wait...</div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast">
+        <div class="toast-icon" id="toastIcon"></div>
+        <div class="toast-body">
+            <div class="toast-title" id="toastTitle"></div>
+            <div class="toast-msg" id="toastMsg"></div>
+        </div>
+        <div class="toast-progress" id="toastProgress"></div>
+    </div>
 
     <!-- PARTICLES CANVAS -->
     <canvas id="particles"></canvas>
@@ -502,7 +748,7 @@
                     <div class="pill-icon"><i class="fa-solid fa-user"></i></div>
                     <div>
                         <div class="pill-label">Full Name</div>
-                        <div class="pill-value" id="pillName">Anurag Soni</div>
+                        <div class="pill-value" id="pillName"></div>
                     </div>
                 </div>
                 <div class="info-pill">
@@ -566,12 +812,14 @@
     <script>
         /* ── LOAD USER DATA ── */
         window.addEventListener('DOMContentLoaded', async () => {
+            showLoader("Fetching your profile...");
             const email = localStorage.getItem('user');
             if (!email) { window.location.href = 'index.html'; return; } // not logged in
 
             const res = await fetch(`https://again-sketch.onrender.com/profile?email=${email}`);
             const data = await res.json();
             const name = data.fullName;
+            hideLoader();
 
             document.getElementById('profileName').textContent = name;
             document.getElementById('profileEmail').textContent = email;
@@ -595,10 +843,13 @@
         }
 
         function logout() {
-            localStorage.removeItem('user');
-            localStorage.removeItem('userName');
-            localStorage.removeItem('userAvatar');
-            window.location.href = 'index.html';
+            showToast("info", "Logged Out", "See you again soon!")
+            setTimeout(() => {                                        // 👈 WRAP in setTimeout
+                localStorage.removeItem('user');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userAvatar');
+                window.location.href = 'index.html';
+            }, 1000);
         }
 
         function toggleEdit(show) {
@@ -610,6 +861,7 @@
         }
 
         async function saveProfile() {
+            showLoader("Saving changes...");
             const oldEmail = localStorage.getItem("user");
             const fullName = document.getElementById("editName").value.trim();
             const email = document.getElementById("editEmail").value.trim();
@@ -620,9 +872,11 @@
                 body: JSON.stringify({ oldEmail, fullName, email })
             });
             const data = await res.json();
-            alert(data.message);
+            hideLoader();                      // 👈 ADD baad me
+            //alert(data.message);
 
             if (data.success) {
+                showToast("success", "Profile Updated", "Your details have been saved");  // 👈 ADD
                 // localStorage update karo
                 localStorage.setItem("user", email);
                 localStorage.setItem("userName", fullName);
@@ -632,6 +886,9 @@
                 document.getElementById("pillName").textContent = fullName;
                 document.getElementById("pillEmail").textContent = email;
                 toggleEdit(false);
+            }
+            else {
+                showToast("error", "Update Failed", data.message);  // 👈 ADD
             }
         }
 
@@ -672,6 +929,47 @@
                 if (d.y < 0 || d.y > H) d.dy *= -1;
             });
             requestAnimationFrame(drawDots);
+        }
+
+        // ── LOADER ──
+        function showLoader(text = "Please wait...") {
+            document.getElementById("loaderText").textContent = text;
+            document.getElementById("globalLoader").classList.add("active");
+        }
+
+        function hideLoader() {
+            document.getElementById("globalLoader").classList.remove("active");
+        }
+
+        // ── TOAST ──
+        let toastTimer;
+        function showToast(type, title, msg) {
+            const toast = document.getElementById("toast");
+            const icon = document.getElementById("toastIcon");
+            const titleEl = document.getElementById("toastTitle");
+            const msgEl = document.getElementById("toastMsg");
+            const progress = document.getElementById("toastProgress");
+
+            const icons = { success: "✓", error: "✕", info: "ℹ" };
+
+            toast.className = "";          // reset classes
+            toast.classList.add(type);
+
+            icon.textContent = icons[type] || "ℹ";
+            titleEl.textContent = title;
+            msgEl.textContent = msg;
+
+            // restart progress bar animation
+            progress.style.animation = "none";
+            progress.offsetHeight;     // reflow trick
+            progress.style.animation = "";
+
+            toast.classList.add("show");
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
         }
 
         resize();
